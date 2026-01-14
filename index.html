@@ -3,433 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fact or Fiction: Rural Health Connect</title>
+    <title>Food is Fuel: Rural Health Connect</title>
     <style>
         :root {
-            /* RURAL HEALTH CONNECT BRAND COLORS */
             --rhc-navy: #003057; 
             --rhc-amber: #ffb300;
-            
-            /* Functional Colors */
-            --bg: #f4f6f7;
-            --card-bg: #ffffff;
-            --text-main: #333333;
-            --text-on-amber: #003057; /* Dark text on yellow for readability */
+            --bg: #f8f9fa;
+            --text: #333;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: var(--text-main);
+            color: var(--text);
+            line-height: 1.6;
         }
 
-        .game-container {
-            width: 100%;
-            max-width: 600px;
-            background: var(--card-bg);
-            padding: 0; /* Removed padding to allow header to touch edges */
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            text-align: center;
-            overflow: hidden; /* Keeps header corners rounded */
-            display: flex;
-            flex-direction: column;
-            margin: 1rem;
-        }
-
-        /* BRAND HEADER */
+        /* HEADER */
         .brand-header {
             background-color: var(--rhc-navy);
             color: white;
             padding: 1rem;
-            font-size: 1.2rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            text-align: center;
         }
+        .brand-header h2 { margin: 0; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        .content-area {
-            padding: 2rem;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            color: var(--rhc-navy);
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-        }
-
-        .progress-container {
-            width: 100%;
-            height: 12px;
-            background-color: #e0e0e0;
-            border-radius: 6px;
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background-color: var(--rhc-amber);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .card-area {
-            min-height: 220px;
+        /* TABS */
+        .tab-container {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 2rem;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-
-        .statement {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            line-height: 1.4;
-            color: #2c3e50;
-        }
-
-        .feedback {
-            font-size: 1.1rem;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            display: none;
-            animation: fadeIn 0.3s;
-            text-align: left;
-        }
-
-        /* Feedback colors remain Green/Red for semantic clarity */
-        .feedback.correct {
-            background-color: #d4edda;
-            color: #155724;
-            border-left: 5px solid #28a745;
-        }
-
-        .feedback.incorrect {
-            background-color: #f8d7da;
-            color: #721c24;
-            border-left: 5px solid #dc3545;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        button {
-            padding: 15px 20px;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 8px;
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.1s, opacity 0.2s;
+            color: var(--rhc-navy);
+            border-bottom: 3px solid transparent;
+        }
+        .tab.active {
+            border-bottom: 3px solid var(--rhc-amber);
+            background-color: #f0f4f8;
+        }
+
+        /* CONTENT */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* ARTICLE STYLES */
+        .article-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .article-card h3 { color: var(--rhc-navy); border-bottom: 2px solid var(--rhc-amber); display: inline-block; margin-top: 0;}
+        .source-link { font-size: 0.85rem; color: #666; font-style: italic; display: block; margin-top: 10px; }
+        .highlight { background-color: #fff3cd; padding: 2px 5px; border-radius: 4px; font-weight: bold; }
+
+        /* QUIZ STYLES */
+        .quiz-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background: var(--rhc-navy);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
             width: 100%;
             max-width: 200px;
         }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        /* BUTTON STYLES */
-        .btn-fact {
-            background-color: var(--rhc-navy);
-            color: white;
-            border: 2px solid var(--rhc-navy);
-        }
-
-        .btn-fiction {
-            background-color: #ffffff;
-            color: #555;
-            border: 2px solid #ccc;
-        }
-
-        .btn-fiction:hover {
-            background-color: #f0f0f0;
-            border-color: #bbb;
-        }
+        .btn:hover { opacity: 0.9; }
+        .btn-outline { background: transparent; border: 2px solid var(--rhc-navy); color: var(--rhc-navy); }
         
-        .btn-action {
-            background-color: var(--rhc-amber);
-            color: var(--text-on-amber); /* High contrast */
-            margin-top: 20px;
-            display: none; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .btn-action:hover {
-            background-color: #e6a200;
-        }
-
-        /* Results Screen */
-        .results-area {
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
             display: none;
         }
+        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
-        .score-display {
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--rhc-navy);
-            margin: 20px 0;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 480px) {
-            .game-container {
-                margin: 0;
-                height: 100vh;
-                border-radius: 0;
-            }
-            .content-area {
-                padding: 1.5rem;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                height: 100%;
-            }
-            .statement {
-                font-size: 1.2rem;
-            }
-            .btn-group {
-                flex-direction: column;
-            }
-            button {
-                width: 100%;
-                max-width: none;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <div class="game-container">
+    <div class="brand-header">
+        <h2>Rural Health Connect: Nutrition</h2>
+    </div>
+
+    <div class="tab-container">
+        <div class="tab active" onclick="switchTab('learn')">1. READ THE FACTS</div>
+        <div class="tab" onclick="switchTab('quiz')">2. TAKE THE QUIZ</div>
+    </div>
+
+    <div class="container">
         
-        <div class="brand-header">
-            Rural Health Connect
+        <div id="learn" class="section active">
+            <div class="article-card">
+                <h3>1. The Salt Trap</h3>
+                <p>70% of the sodium we eat comes from processed foods, not the salt shaker. High sodium causes high blood pressure.</p>
+                <p><span class="highlight">Tip:</span> Rinse canned vegetables to remove up to 40% of the sodium.</p>
+                <a href="https://www.cdc.gov/salt/food.htm" target="_blank" class="source-link">Source: CDC</a>
+            </div>
+
+            <div class="article-card">
+                <h3>2. Frozen vs. Fresh</h3>
+                <p>Frozen vegetables are often <span class="highlight">more nutritious</span> than fresh ones because they are frozen at peak ripeness. They are also cheaper and last longer.</p>
+                <a href="https://www.eatright.org" target="_blank" class="source-link">Source: Academy of Nutrition and Dietetics</a>
+            </div>
+
+            <div class="article-card">
+                <h3>3. The Sugar Disguise</h3>
+                <p>Added sugar hides in drinks and sauces. A single soda can contain 16 teaspoons of sugar—double the daily limit for most adults.</p>
+                <a href="https://www.heart.org" target="_blank" class="source-link">Source: American Heart Association</a>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="switchTab('quiz')">Ready? Start Quiz &rarr;</button>
+            </div>
         </div>
 
-        <div class="content-area">
-            
-            <div id="game-screen">
-                <div class="progress-container">
-                    <div class="progress-fill" id="progress"></div>
-                </div>
-
-                <h1>Fact or Fiction?</h1>
-
-                <div class="card-area">
-                    <div class="statement" id="statement-text">Loading...</div>
-                    <div id="feedback-area" class="feedback"></div>
-                </div>
-
-                <div class="btn-group" id="controls">
-                    <button class="btn-fact" onclick="handleAnswer(true)">FACT</button>
-                    <button class="btn-fiction" onclick="handleAnswer(false)">FICTION</button>
+        <div id="quiz" class="section">
+            <div class="quiz-container">
+                <div id="quiz-ui">
+                    <h3 id="question-text">Question goes here...</h3>
+                    <div id="options">
+                        <button class="btn btn-outline" onclick="checkAnswer(true)">True</button>
+                        <button class="btn btn-outline" onclick="checkAnswer(false)">False</button>
+                    </div>
+                    <div id="feedback" class="feedback"></div>
+                    <button id="next-btn" class="btn" style="display:none; margin-top:15px; background:var(--rhc-amber); color:var(--rhc-navy);" onclick="nextQuestion()">Next Question</button>
                 </div>
                 
-                <button class="btn-action" id="next-btn" onclick="nextQuestion()">Next Question &rarr;</button>
+                <div id="score-screen" style="display:none;">
+                    <h2>Quiz Complete!</h2>
+                    <p id="score-text" style="font-size:1.5rem; font-weight:bold; color:var(--rhc-navy);"></p>
+                    <button class="btn" onclick="restartQuiz()">Review Facts</button>
+                </div>
             </div>
-
-            <div id="results-screen" class="results-area">
-                <h1>Quiz Complete!</h1>
-                <p>You scored:</p>
-                <div class="score-display" id="final-score">0 / 15</div>
-                <p id="score-message" style="font-size: 1.1rem; line-height: 1.5;"></p>
-                <button class="btn-action" style="display:inline-block;" onclick="restartGame()">Play Again</button>
-            </div>
-
         </div>
+
     </div>
 
     <script>
-        // --- SECURE DATA: 15 Questions (Health & Digital Literacy) ---
+        // --- DATA ---
         const questions = [
-            {
-                text: "Antibiotics are the best way to cure the common cold or flu.",
-                isFact: false,
-                explanation: "Antibiotics kill bacteria, not viruses. Colds and flu are caused by viruses."
-            },
-            {
-                text: "If you receive an email saying you won a contest you didn't enter, it is likely a scam.",
-                isFact: true,
-                explanation: "This is a common 'phishing' scam. Never click links in unexpected emails."
-            },
-            {
-                text: "You should put butter on a burn to help it heal.",
-                isFact: false,
-                explanation: "Butter traps heat and can cause infection. Use cool running water instead."
-            },
-            {
-                text: "High blood pressure usually has clear warning signs like headaches or sweating.",
-                isFact: false,
-                explanation: "High blood pressure is called the 'Silent Killer' because it often has NO symptoms."
-            },
-            {
-                text: "Using the same password for all your accounts makes you easier to hack.",
-                isFact: true,
-                explanation: "If one site is breached, hackers will try that password everywhere. Use unique passwords."
-            },
-            {
-                text: "Frozen vegetables can be just as healthy as fresh ones.",
-                isFact: true,
-                explanation: "They are frozen at peak ripeness, locking in nutrients."
-            },
-            {
-                text: "The 'padlock' icon in your browser address bar means a website is 100% trustworthy.",
-                isFact: false,
-                explanation: "The lock means the connection is encrypted, but scammers can use encryption too. Always check the URL."
-            },
-            {
-                text: "You need to drink 8 glasses of water a day, regardless of your diet.",
-                isFact: false,
-                explanation: "Hydration needs vary. You also get water from fruits, vegetables, and other drinks."
-            },
-            {
-                text: "Two-factor authentication (2FA) adds an extra layer of security to your accounts.",
-                isFact: true,
-                explanation: "It requires a code sent to your phone, making it much harder for hackers to break in."
-            },
-            {
-                text: "Telehealth appointments are not as private as in-person doctor visits.",
-                isFact: false,
-                explanation: "Telehealth platforms must follow strict HIPAA privacy laws, just like a doctor's office."
-            },
-            {
-                text: "Chest pain is the only sign of a heart attack.",
-                isFact: false,
-                explanation: "Signs can include shortness of breath, nausea, or pain in the arm/jaw (especially in women)."
-            },
-            {
-                text: "Software updates on your phone or computer often contain important security fixes.",
-                isFact: true,
-                explanation: "Ignoring updates leaves your device vulnerable to new viruses and hackers."
-            },
-            {
-                text: "Mental health affects your physical health.",
-                isFact: true,
-                explanation: "Stress and depression can increase the risk of heart disease, diabetes, and stroke."
-            },
-            {
-                text: "You should stop taking your medication as soon as you feel better.",
-                isFact: false,
-                explanation: "Always finish the prescribed dose to prevent the illness from returning or developing resistance."
-            },
-            {
-                text: "Public Wi-Fi (like at a cafe) is safe for online banking if you don't save your password.",
-                isFact: false,
-                explanation: "Public Wi-Fi is easy to intercept. Avoid banking on public networks unless you use a VPN."
-            }
+            { text: "Rinsing canned vegetables with water can remove about 40% of the sodium.", isTrue: true, info: "Correct! This is a great way to lower salt intake on a budget." },
+            { text: "Fresh vegetables are always healthier than frozen ones.", isTrue: false, info: "Myth! Frozen veggies are picked at peak ripeness and retain their nutrients perfectly." },
+            { text: "Most of the salt in our diet comes from the salt shaker on the table.", isTrue: false, info: "Incorrect. 70% comes from processed and packaged foods." },
+            { text: "A single can of soda can contain more sugar than you should eat in an entire day.", isTrue: true, info: "True. A 20oz soda can have 16 tsp of sugar; the limit is 6-9 tsp." },
+            { text: "If a bread label says 'Wheat Flour', it is definitely a whole grain.", isTrue: false, info: "False. Look for the word 'Whole' as the FIRST ingredient (e.g., 'Whole Wheat Flour')." }
         ];
 
-        // --- GAME STATE ---
-        let currentQuestionIndex = 0;
+        let currentQ = 0;
         let score = 0;
-        
-        // --- DOM ELEMENTS ---
-        const statementText = document.getElementById('statement-text');
-        const feedbackArea = document.getElementById('feedback-area');
-        const nextBtn = document.getElementById('next-btn');
-        const controls = document.getElementById('controls');
-        const progressBar = document.getElementById('progress');
-        const gameScreen = document.getElementById('game-screen');
-        const resultsScreen = document.getElementById('results-screen');
-        const finalScore = document.getElementById('final-score');
-        const scoreMessage = document.getElementById('score-message');
 
-        // --- INITIALIZATION ---
-        function initGame() {
-            currentQuestionIndex = 0;
-            score = 0;
-            gameScreen.style.display = 'block';
-            resultsScreen.style.display = 'none';
-            loadQuestion();
+        // --- FUNCTIONS ---
+        function switchTab(tabName) {
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            // Find the tab button that corresponds to the name
+            const tabIndex = tabName === 'learn' ? 0 : 1;
+            document.querySelectorAll('.tab')[tabIndex].classList.add('active');
         }
 
-        // --- CORE LOGIC ---
         function loadQuestion() {
-            const q = questions[currentQuestionIndex];
-            
-            statementText.textContent = q.text;
-            
-            // Reset UI
-            feedbackArea.style.display = 'none';
-            feedbackArea.className = 'feedback';
-            nextBtn.style.display = 'none';
-            controls.style.display = 'flex';
-            
-            // Update Progress Bar
-            const percentage = ((currentQuestionIndex) / questions.length) * 100;
-            progressBar.style.width = percentage + '%';
+            const q = questions[currentQ];
+            document.getElementById('question-text').textContent = q.text;
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('options').style.display = 'block';
         }
 
-        function handleAnswer(userSaysFact) {
-            const q = questions[currentQuestionIndex];
-            const isCorrect = (userSaysFact === q.isFact);
-
-            // Update Logic
-            if (isCorrect) {
+        function checkAnswer(userSaysTrue) {
+            const q = questions[currentQ];
+            const feedbackEl = document.getElementById('feedback');
+            
+            if(userSaysTrue === q.isTrue) {
                 score++;
-                feedbackArea.innerHTML = "<strong>Correct!</strong><br>" + q.explanation;
-                feedbackArea.classList.add('correct');
+                feedbackEl.className = 'feedback correct';
+                feedbackEl.innerHTML = "<strong>Correct!</strong> " + q.info;
             } else {
-                feedbackArea.innerHTML = "<strong>Incorrect.</strong><br>" + q.explanation;
-                feedbackArea.classList.add('incorrect');
+                feedbackEl.className = 'feedback incorrect';
+                feedbackEl.innerHTML = "<strong>Wrong.</strong> " + q.info;
             }
-
-            // Update UI
-            feedbackArea.style.display = 'block';
-            controls.style.display = 'none'; 
-            nextBtn.style.display = 'block'; 
+            
+            feedbackEl.style.display = 'block';
+            document.getElementById('options').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'inline-block';
         }
 
         function nextQuestion() {
-            currentQuestionIndex++;
-
-            if (currentQuestionIndex < questions.length) {
+            currentQ++;
+            if(currentQ < questions.length) {
                 loadQuestion();
             } else {
-                endGame();
+                showScore();
             }
         }
 
-        function endGame() {
-            gameScreen.style.display = 'none';
-            resultsScreen.style.display = 'block';
-            finalScore.textContent = `${score} / ${questions.length}`;
-
-            // Custom message based on score
-            if (score === 15) {
-                scoreMessage.textContent = "Perfect score! You are a Rural Health Connect expert.";
-            } else if (score >= 10) {
-                scoreMessage.textContent = "Great job! You have strong health & digital literacy skills.";
-            } else {
-                scoreMessage.textContent = "Good effort! Keep using Rural Health Connect to learn more about staying safe and healthy.";
-            }
+        function showScore() {
+            document.getElementById('quiz-ui').style.display = 'none';
+            document.getElementById('score-screen').style.display = 'block';
+            document.getElementById('score-text').textContent = `You got ${score} out of ${questions.length} correct!`;
         }
 
-        function restartGame() {
-            initGame();
+        function restartQuiz() {
+            currentQ = 0;
+            score = 0;
+            document.getElementById('quiz-ui').style.display = 'block';
+            document.getElementById('score-screen').style.display = 'none';
+            loadQuestion();
+            switchTab('learn');
         }
 
-        // Start the game on load
-        initGame();
-
+        // Init
+        loadQuestion();
     </script>
 </body>
 </html>
